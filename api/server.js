@@ -7,7 +7,7 @@ const server = express();
 
 const sessionConfig = {
   name: "cookieName",
-  secret: process.env.SECRET || "Some secret warning",
+  secret: process.env.SECRET || "Some secret warning", // 
   resave: false,
   saveUninitialized: process.env.SEND_COOKIES || true,
   cookie: {
@@ -33,7 +33,7 @@ server.get("/users", auth, (req, res) => {
 });
 
 server.post("/register", (req, res) => {
-  const hash = bcrypt.hashSync(req.body.password, 4);
+  const hash = bcrypt.hashSync(req.body.password, 4); // hashing 4x - 
   const newUser = {
     username: req.body.username,
     password: hash,
@@ -51,7 +51,7 @@ server.post("/register", (req, res) => {
 server.post("/login", (req, res) => {
   db.findByUsername(req.body.username)
     .then((user) => {
-      if (user && bcrypt.compareSync(req.body.password, user[0].password)) {
+      if (user && bcrypt.compareSync(req.body.password, user[0].password)) { // stored hash as opposed to string
         req.session.login = true;
         req.session.userId = user[0].id;
         res.status(200).json({ message: "Login Successful!" });
